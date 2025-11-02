@@ -1,144 +1,191 @@
-# Sistema de Gerenciamento de Cursos
+# TchauInsonia Platform
 
-Um aplicativo React para gerenciamento de cursos e criação de aulas com editor rich text similar ao Gutenberg.
+Uma aplicação React moderna para gerenciamento de cursos educacionais sobre insônia, com sistema completo de autenticação, criação de aulas e formulários.
 
-## 🚀 Características
-
-- **Autenticação segura**: Sistema de login com validação de roles
-- **Controle de acesso**: Apenas usuários com role > 0 podem acessar o sistema
-- **Gerenciamento de cursos**: Listagem de todos os cursos disponíveis
-- **Criação de aulas**: Formulário completo para criação de aulas
-- **Editor Rich Text**: Editor HTML similar ao Gutenberg do WordPress
-- **Interface responsiva**: Design adaptável para desktop e mobile
-
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Tecnologias
 
 - **React 18** com TypeScript
-- **Vite** como bundler
+- **Vite** como bundler e dev server
+- **Tailwind CSS** + Sistema CSS customizado
 - **React Router DOM** para navegação
 - **Axios** para requisições HTTP
-- **React Hook Form** com validação Yup
-- **TipTap** como editor rich text
-- **Tailwind CSS** para estilização
+- **React Hook Form** para formulários
+- **TipTap** para editor de texto rico
+- **Context API** para gerenciamento de estado
 
-## 🏗️ Estrutura do Projeto
+## 🎯 Funcionalidades
+
+### 📋 Sistema de Autenticação
+- Login com email/usuário e senha
+- Controle de acesso baseado em roles (role > 0)
+- Proteção de rotas
+- Context de autenticação
+
+### 📚 Gerenciamento de Cursos
+- Listagem de cursos disponíveis
+- Visualização de detalhes dos cursos
+- Navegação para criação de aulas
+
+### 🎓 Sistema de Aulas
+- Criação de aulas com editor rico (tipo Gutenberg)
+- Suporte a conteúdo HTML, vídeo e áudio
+- Sistema de pré-requisitos entre aulas
+- Categorização de aulas
+- Visualização responsiva de aulas
+
+### 📝 Criador de Formulários
+- 4 tipos de perguntas:
+  - Texto Livre
+  - Número
+  - Múltipla Escolha
+  - Escolha Única
+- Sistema de notificações configuráveis
+- Vinculação com cursos e aulas específicas
+- Interface drag-and-drop para opções
+
+### 🎨 Design System
+- CSS customizado baseado na versão legada
+- Fonte **Khula** do Google Fonts
+- Paleta de cores consistente (#7620FF, #0B093B, #F2B300)
+- Componentes reutilizáveis (cards, botões, inputs)
+- Layout responsivo com largura máxima de 80%
+
+## 🏁 Como Executar
+
+### Pré-requisitos
+- Node.js 18+
+- npm ou yarn
+
+### Instalação
+```bash
+# Clone o repositório
+git clone https://github.com/JP-Coutinho/TchauInsonia-Build.git
+
+# Entre no diretório
+cd TchauInsonia-Build
+
+# Instale as dependências
+npm install
+
+# Execute em modo desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+```
+
+### Configuração da API
+Configure as variáveis de ambiente no arquivo `.env`:
+```env
+VITE_API_BASE_URL=sua_url_da_api
+```
+
+## 📁 Estrutura do Projeto
 
 ```
 src/
-├── components/
-│   ├── ProtectedRoute.tsx      # Componente para proteção de rotas
-│   └── RichTextEditor.tsx      # Editor HTML rich text
-├── contexts/
-│   └── AuthContext.tsx         # Context de autenticação
-├── pages/
-│   ├── LoginPage.tsx           # Página de login
-│   ├── CoursesPage.tsx         # Listagem de cursos
-│   └── CreateLessonPage.tsx    # Criação de aulas
-├── services/
-│   └── api.ts                  # Configuração e chamadas da API
-├── types/
-│   └── index.ts                # Definições de tipos TypeScript
-└── App.tsx                     # Componente principal com rotas
+├── components/          # Componentes reutilizáveis
+│   ├── ProtectedRoute.tsx
+│   └── RichTextEditor.tsx
+├── contexts/           # Contextos React
+│   └── AuthContext.tsx
+├── pages/             # Páginas da aplicação
+│   ├── LoginPage.tsx
+│   ├── CoursesPage.tsx
+│   ├── CreateLessonPage.tsx
+│   ├── CreateFormPage.tsx
+│   └── LessonViewPage.tsx
+├── services/          # Serviços e APIs
+│   └── api.ts
+├── types/            # Definições TypeScript
+│   └── index.ts
+└── index.css         # Sistema CSS customizado
 ```
 
-## 🔧 Instalação e Execução
+## 🔐 Autenticação
 
-1. **Clone o repositório e instale as dependências:**
-   ```bash
-   npm install
-   ```
+O sistema usa autenticação baseada em JWT com as seguintes regras:
+- Usuários devem ter `role > 0` para acessar o sistema
+- Token armazenado no localStorage
+- Interceptors do Axios para renovação automática
 
-2. **Configure as variáveis de ambiente:**
-   Edite o arquivo `.env` e ajuste a URL da API:
-   ```
-   VITE_API_BASE_URL=http://localhost:5000
-   ```
-
-3. **Execute o projeto em modo de desenvolvimento:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Acesse a aplicação:**
-   ```
-   http://localhost:5173
-   ```
-
-## 🔌 Endpoints da API
+## 📋 APIs Utilizadas
 
 ### Autenticação
-- **POST** `/api/Auth/login`
-  ```json
-  {
-    "usernameOrEmail": "string",
-    "password": "string"
-  }
-  ```
+- `POST /api/Auth/login` - Login do usuário
 
 ### Cursos
-- **GET** `/api/Course` - Lista todos os cursos
+- `GET /api/courses` - Listar cursos
+- `GET /api/courses/{id}` - Detalhes do curso
 
 ### Aulas
-- **POST** `/api/Course/{courseId}/lessons` - Cria uma nova aula
-  ```json
-  {
-    "title": "string",
-    "description": "string",
-    "order": 0,
-    "isWelcome": true,
-    "videoUrl": "string",
-    "audioUrl": "string",
-    "htmlContent": "string",
-    "durationMinutes": 0,
-    "prerequisites": ["string"]
-  }
-  ```
+- `POST /api/lessons` - Criar aula
 
-## 📋 Funcionalidades
+### Formulários  
+- `POST /api/forms` - Criar formulário
 
-### Sistema de Login
-- Autenticação via username/email e senha
-- Validação de role (deve ser > 0)
-- Armazenamento seguro do token no localStorage
-- Redirecionamento automático baseado no status de autenticação
+## 🎨 Sistema de Design
 
-### Gerenciamento de Cursos
-- Listagem de todos os cursos disponíveis
-- Informações detalhadas de cada curso
-- Navegação para criação de aulas
+O projeto utiliza um sistema de CSS customizado que replica o design da versão anterior:
+
+### Classes Utilitárias
+- **Typography**: `font12-font60`, `light-extraBold`
+- **Colors**: `darkColor`, `greyColor`, `purpleColor`
+- **Layout**: `flexCenter`, `flexBetween`, `textCenter`
+- **Components**: `btn-primary`, `card-custom`, `input-custom`
+
+### Responsividade
+- Layout adaptável para desktop, tablet e mobile
+- Largura máxima de 80% em telas grandes
+- Grid responsivo para listagem de cursos
+
+## 👥 Contribuição
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 📞 Contato
+
+**JP Coutinho** - jp.coutinho@ufrj.br
+
+**Link do Projeto**: [https://github.com/JP-Coutinho/TchauInsonia-Build](https://github.com/JP-Coutinho/TchauInsonia-Build)
+
+## 📸 Screenshots
+
+### Tela de Login
+- Interface moderna com gradientes
+- Validação em tempo real
+- Feedback visual para erros
+
+### Dashboard de Cursos
+- Grid responsivo de cursos
+- Cards com hover effects
+- Botões de ação intuitivos
 
 ### Criação de Aulas
-- Formulário completo com validação
-- Editor rich text para conteúdo HTML
-- Upload de URLs para vídeo e áudio
+- Editor rich text completo
 - Sistema de pré-requisitos
-- Configuração de ordem e duração
+- Upload de mídia
 
-### Editor Rich Text
-- Formatação de texto (negrito, itálico, riscado)
-- Títulos (H1, H2, H3)
-- Listas (ordenadas e não ordenadas)
-- Alinhamento de texto
-- Citações e blocos de código
-- Histórico de ações (desfazer/refazer)
+### Criador de Formulários
+- Interface drag-and-drop
+- Múltiplos tipos de pergunta
+- Sistema de notificações
 
-## 🔒 Segurança
+## 🔄 Histórico de Versões
 
-- **Proteção de rotas**: Rotas protegidas por autenticação
-- **Validação de roles**: Controle de acesso baseado em permissões
-- **Interceptadores de requisição**: Token automático nas requisições
-- **Validação de formulários**: Validação client-side com Yup
-
-## 🎨 Interface
-
-- **Design moderno**: Interface limpa e profissional
-- **Responsiva**: Adaptável a diferentes tamanhos de tela
-- **Feedback visual**: Estados de loading e mensagens de erro
-- **Acessibilidade**: Componentes acessíveis e navegação por teclado
-
-## 📦 Scripts Disponíveis
-
-- `npm run dev` - Executa em modo de desenvolvimento
-- `npm run build` - Cria build de produção
-- `npm run preview` - Visualiza build de produção
-- `npm run lint` - Executa linter
+### v1.0.0 (Atual)
+- ✅ Sistema de autenticação completo
+- ✅ Gerenciamento de cursos
+- ✅ Criação de aulas com editor rico
+- ✅ Sistema de formulários avançado
+- ✅ Design system baseado na versão legada
+- ✅ Layout responsivo
+- ✅ Integração com APIs
